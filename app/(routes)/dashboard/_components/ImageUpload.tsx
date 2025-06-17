@@ -5,15 +5,17 @@ import useStore from "@/store/useStore";
 import Image from "next/image";
 
 const ImageUpload = () => {
-  const { setImageUrl, imageUrl } = useStore();
+  const { setImageUrl, imageUrl, setImageFile } = useStore();
   const onImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       console.log(file);
       const previewUrl = URL.createObjectURL(file);
+      setImageFile(file);
       setImageUrl(previewUrl);
     }
   };
+
   return (
     <div className="mt-10">
       {!imageUrl ? (
