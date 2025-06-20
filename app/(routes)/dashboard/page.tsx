@@ -44,7 +44,7 @@ function Dashboard() {
       });
       console.log(handleSaveToDatabase.data);
       setIsUploading(false);
-      router.push("/code" + uid);
+      router.push("/code/" + uid);
     } catch (error) {
       console.error("Error uploading file:", error);
       toast.error("Error uploading file");

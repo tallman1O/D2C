@@ -12,6 +12,8 @@ interface StoreState {
   userPrompt: string | null;
   setUserPrompt: (prompt: string | null) => void;
   setIsUploading: (isUploading: boolean) => void;
+  codeResponse: string;
+  setCodeResponse: (code: string | ((prev: string) => string)) => void;
 }
 
 const useStore = create<StoreState>()(
@@ -22,11 +24,17 @@ const useStore = create<StoreState>()(
       isUploading: false,
       model: null,
       userPrompt: null,
+      codeResponse: "",
       setImageUrl: (image: string | null) => set({ imageUrl: image }),
       setImageFile: (file: File | null) => set({ imageFile: file }),
       setModel: (model: string | null) => set({ model }),
       setUserPrompt: (prompt: string | null) => set({ userPrompt: prompt }),
       setIsUploading: (isUploading: boolean) => set({ isUploading }),
+      setCodeResponse: (code: string | ((prev: string) => string)) =>
+        set((state) => ({
+          codeResponse:
+            typeof code === "function" ? code(state.codeResponse) : code,
+        })),
     }),
     {
       name: "image-storage",
