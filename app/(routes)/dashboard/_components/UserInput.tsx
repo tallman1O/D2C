@@ -9,21 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import React from "react";
 import useStore from "@/store/useStore";
-
-const models = [
-  {
-    name: "Gemini",
-    icon: "https://img.icons8.com/color/48/gemini-ai.png",
-  },
-  {
-    name: "llama",
-    icon: "https://img.icons8.com/fluency/48/meta.png",
-  },
-  {
-    name: "Deepseek",
-    icon: "https://img.icons8.com/color/48/deepseek.png",
-  },
-];
+import { models } from "@/data/constants";
 
 const UserInput = () => {
   const { setModel, setUserPrompt } = useStore();

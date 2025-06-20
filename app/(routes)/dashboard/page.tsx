@@ -11,8 +11,9 @@ import { toast } from "sonner";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { useAuthContext } from "@/app/provider";
-
+import { useRouter } from "next/navigation";
 function Dashboard() {
+  const router = useRouter();
   const { imageFile, userPrompt, model, isUploading, setIsUploading } =
     useStore();
   const { user } = useAuthContext();
@@ -42,11 +43,11 @@ function Dashboard() {
         email: user?.email,
       });
       console.log(handleSaveToDatabase.data);
+      setIsUploading(false);
+      router.push("/code" + uid);
     } catch (error) {
       console.error("Error uploading file:", error);
       toast.error("Error uploading file");
-    } finally {
-      setIsUploading(false);
     }
   };
 
