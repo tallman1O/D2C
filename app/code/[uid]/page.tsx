@@ -1,9 +1,11 @@
 "use client";
 import { PROMPT } from "@/data/constants";
 import axios from "axios";
-import { LoaderCircle } from "lucide-react";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import CodeEditor from "../_components/CodeEditor";
+import SelectionDetails from "../_components/SelectionDetails";
+import AppHeader from "@/app/_components/AppHeader";
 
 interface RECORD {
   id: number;
@@ -29,7 +31,7 @@ const Code = () => {
     const resp = result?.data;
 
     if (resp?.code == null) {
-      GenerateCode(resp);
+      // GenerateCode(resp);
     }
 
     if (resp?.error) {
@@ -69,16 +71,22 @@ const Code = () => {
         .replace("jsx", "")
         .replace("```", "");
       setCodeResponse((prev) => prev + text);
-      console.log(text);
     }
     setLoading(false);
   };
 
   return (
     <div>
-      {loading && <LoaderCircle className="animate-spin" />}
-      <div className="flex flex-col gap-4">
-        <h1 className="text-sm font-bold">{codeResponse}</h1>
+      <AppHeader hideSidebar={true} />
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 p-5">
+        <div className="col-span-1">
+          {/*Selection Details*/}
+          <SelectionDetails />
+        </div>
+        <div className="col-span-4">
+          {/*Code Editor*/}
+          <CodeEditor />
+        </div>
       </div>
     </div>
   );
