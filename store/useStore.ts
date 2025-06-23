@@ -1,3 +1,4 @@
+import { RECORD } from "@/app/code/[uid]/page";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -14,6 +15,8 @@ interface StoreState {
   setIsUploading: (isUploading: boolean) => void;
   codeResponse: string;
   setCodeResponse: (code: string | ((prev: string) => string)) => void;
+  record: RECORD | null;
+  setRecord: (record: RECORD | null) => void;
 }
 
 const useStore = create<StoreState>()(
@@ -25,6 +28,7 @@ const useStore = create<StoreState>()(
       model: null,
       userPrompt: null,
       codeResponse: "",
+      record: null,
       setImageUrl: (image: string | null) => set({ imageUrl: image }),
       setImageFile: (file: File | null) => set({ imageFile: file }),
       setModel: (model: string | null) => set({ model }),
@@ -35,6 +39,7 @@ const useStore = create<StoreState>()(
           codeResponse:
             typeof code === "function" ? code(state.codeResponse) : code,
         })),
+      setRecord: (record: any) => set({ record }),
     }),
     {
       name: "image-storage",

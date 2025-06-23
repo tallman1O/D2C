@@ -6,8 +6,9 @@ import React, { useEffect, useState } from "react";
 import CodeEditor from "../_components/CodeEditor";
 import SelectionDetails from "../_components/SelectionDetails";
 import AppHeader from "@/app/_components/AppHeader";
+import useStore from "@/store/useStore";
 
-interface RECORD {
+export interface RECORD {
   id: number;
   userPrompt: string;
   code: any;
@@ -20,6 +21,7 @@ const Code = () => {
   const [loading, setLoading] = useState(false);
   const [codeResponse, setCodeResponse] = useState("");
   const { uid } = useParams();
+  const { setRecord, record } = useStore();
   useEffect(() => {
     uid && GetRecordInfo();
   }, [uid]);
@@ -29,6 +31,7 @@ const Code = () => {
     const result = await axios.get(`/api/wireframe?uid=${uid}`);
     console.log(result.data);
     const resp = result?.data;
+    setRecord(resp);
 
     if (resp?.code == null) {
       // GenerateCode(resp);
@@ -78,10 +81,10 @@ const Code = () => {
   return (
     <div>
       <AppHeader hideSidebar={true} />
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 p-5">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-10 p-5">
         <div className="col-span-1">
           {/*Selection Details*/}
-          <SelectionDetails />
+          {record && <SelectionDetails record={record} />}
         </div>
         <div className="col-span-4">
           {/*Code Editor*/}
