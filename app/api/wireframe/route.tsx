@@ -33,3 +33,13 @@ export async function GET(req: NextResponse) {
 
   return NextResponse.json({ error: "No UID provided" });
 }
+
+export async function PUT(req: NextRequest) {
+  const { uid, code } = await req.json();
+  const result = await db
+    .update(wireframesTable)
+    .set({ code: code })
+    .where(eq(wireframesTable.uid, uid))
+    .returning({ uid: wireframesTable.uid });
+  return NextResponse.json(result);
+}

@@ -11,6 +11,7 @@ import { Loader2 } from "lucide-react";
 
 export interface RECORD {
   id: number;
+  uid: string;
   userPrompt: string;
   code: any;
   imageUrl: string;
@@ -39,6 +40,10 @@ const Code = () => {
 
     if (resp?.code == null) {
       GenerateCode(resp);
+    } else {
+      setCodeResponse(resp?.code?.response);
+      setLoading(false);
+      setCodeIsGenerated(true);
     }
 
     if (resp?.error) {
@@ -82,6 +87,21 @@ const Code = () => {
       setCodeResponse((prev) => prev + text);
     }
     setCodeIsGenerated(true);
+    updateCodeToDb();
+  };
+
+  useEffect(() => {
+    if (codeResponse !== "" && record?.uid && codeIsGenerated && record?.code == null) {
+      updateCodeToDb();
+    }
+  }, [codeResponse && record && codeIsGenerated]);
+
+  const updateCodeToDb = async () => {
+    const result = await axios.put("/api/wireframe", {
+      uid: record?.uid,
+      code: { response: codeResponse },
+    });
+    console.log("Updated Code: ", result);
   };
 
   return (
