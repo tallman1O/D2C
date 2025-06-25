@@ -7,6 +7,7 @@ import CodeEditor from "../_components/CodeEditor";
 import SelectionDetails from "../_components/SelectionDetails";
 import AppHeader from "@/app/_components/AppHeader";
 import useStore from "@/store/useStore";
+import { Loader2 } from "lucide-react";
 
 export interface RECORD {
   id: number;
@@ -20,6 +21,7 @@ export interface RECORD {
 const Code = () => {
   const [loading, setLoading] = useState(false);
   const [codeResponse, setCodeResponse] = useState("");
+  const [codeIsGenerated, setCodeIsGenerated] = useState(false);
   const { uid } = useParams();
   const { setRecord, record } = useStore();
   useEffect(() => {
@@ -27,6 +29,8 @@ const Code = () => {
   }, [uid]);
 
   const GetRecordInfo = async () => {
+    setCodeIsGenerated(false);
+    setCodeResponse("");
     setLoading(true);
     const result = await axios.get(`/api/wireframe?uid=${uid}`);
     console.log(result.data);
@@ -34,17 +38,18 @@ const Code = () => {
     setRecord(resp);
 
     if (resp?.code == null) {
-      // GenerateCode(resp);
+      GenerateCode(resp);
     }
 
     if (resp?.error) {
       console.log("No Record Found: ", resp?.error);
     }
-    setLoading(false);
+    // setLoading(false);
   };
 
   const GenerateCode = async (record: RECORD) => {
     setLoading(true);
+    setCodeIsGenerated(false);
     const result = await fetch("/api/model", {
       method: "POST",
       headers: {
@@ -58,6 +63,7 @@ const Code = () => {
     });
 
     if (!result?.body) return;
+    setLoading(false);
 
     const reader = result?.body?.getReader();
     const decoder = new TextDecoder();
@@ -75,7 +81,7 @@ const Code = () => {
         .replace("```", "");
       setCodeResponse((prev) => prev + text);
     }
-    setLoading(false);
+    setCodeIsGenerated(true);
   };
 
   return (
@@ -84,11 +90,23 @@ const Code = () => {
       <div className="grid grid-cols-1 md:grid-cols-5 gap-10 p-5">
         <div className="col-span-1">
           {/*Selection Details*/}
-          {record && <SelectionDetails record={record} />}
+          {record && (
+            <SelectionDetails
+              record={record}
+              ReGenerateCode={() => GetRecordInfo()}
+              codeIsGenerated={codeIsGenerated}
+            />
+          )}
         </div>
         <div className="col-span-4">
           {/*Code Editor*/}
-          <CodeEditor />
+          {loading ? (
+            <div className="flex justify-center items-center h-[620px]">
+              <Loader2 className="animate-spin" />
+            </div>
+          ) : (
+            <CodeEditor code={codeResponse} codeIsGenerated={codeIsGenerated} />
+          )}
         </div>
       </div>
     </div>
