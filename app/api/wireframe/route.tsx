@@ -22,6 +22,7 @@ export async function GET(req: NextResponse) {
   const reqURL = req.url;
   const { searchParams } = new URL(reqURL);
   const uid = searchParams?.get("uid");
+  const email = searchParams?.get("email");
 
   if (uid) {
     const result = await db
@@ -29,6 +30,12 @@ export async function GET(req: NextResponse) {
       .from(wireframesTable)
       .where(eq(wireframesTable.uid, uid));
     return NextResponse.json(result[0]);
+  } else if (email) {
+    const result = await db
+      .select()
+      .from(wireframesTable)
+      .where(eq(wireframesTable.createdBy, email));
+    return NextResponse.json(result);
   }
 
   return NextResponse.json({ error: "No UID provided" });
