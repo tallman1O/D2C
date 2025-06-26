@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json(wireframe);
 }
 
-export async function GET(req: NextResponse) {
+export async function GET(req: NextRequest) {
   const reqURL = req.url;
   const { searchParams } = new URL(reqURL);
   const uid = searchParams?.get("uid");
