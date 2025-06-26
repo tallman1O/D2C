@@ -4,7 +4,7 @@ import ProfileAvatar from './ProfileAvatar'
 
 function AppHeader({ hideSidebar = false }: { hideSidebar?: boolean }) {
     return (
-        <div className='p-4 shadow-sm flex items-center justify-between w-full '>
+        <div className='p-4 shadow-sm flex items-center justify-between w-full'>
             {!hideSidebar && <SidebarTrigger />}
             <ProfileAvatar />
         </div>
