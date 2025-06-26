@@ -107,13 +107,3 @@ store/
 ## 🤝 Contributing
 
 Contributions are welcome! Please open issues and submit pull requests for new features, bug fixes, or improvements.
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
----
-
-Let me know if you want to customize any section or add more details!
