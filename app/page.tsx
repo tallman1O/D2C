@@ -2,7 +2,6 @@
 import Image from "next/image";
 import Authentication from "./_components/Authentication";
 import { Button } from "@/components/ui/button";
-import { auth } from "@/configs/firebaseConfig";
 import ProfileAvatar from "./_components/ProfileAvatar";
 import { useAuthContext } from "./provider";
 import { Palette, Sparkles, Users, Zap, ArrowRight, Star } from "lucide-react";
@@ -42,8 +41,6 @@ export default function Home() {
       gradient: "from-indigo-50 to-blue-50",
     },
   ];
-  // const user = auth?.currentUser;
-  // console.log(user)
   const user = useAuthContext();
   console.log(user?.user);
   return (
